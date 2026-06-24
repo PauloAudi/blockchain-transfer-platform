@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"tcc-eth/chains/btc"
 	"tcc-eth/chains/eth"
 	"tcc-eth/chains/sol"
 	"tcc-eth/core"
@@ -37,6 +38,12 @@ func main() {
 		adapter = sol.NewAdapter(
 			"https://api.devnet.solana.com",
 			"https://explorer.solana.com",
+		)
+	case "btc":
+		adapter = btc.NewAdapter(
+			"https://mempool.space/testnet/api",
+			"https://mempool.space/testnet/tx",
+			true, // testnet
 		)
 	default:
 		log.Fatalf("unsupported chain: %q (use 'eth' or 'sol')", chain)
