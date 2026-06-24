@@ -6,10 +6,15 @@ import (
 	"os"
 
 	"tcc-eth/chains/eth"
+	"tcc-eth/chains/sol"
 	"tcc-eth/core"
 )
 
 func main() {
+	chain := os.Getenv("CHAIN")
+	if chain == "" {
+		log.Fatal("CHAIN environment variable not set (use 'eth' or 'sol')")
+	}
 	privateKey := os.Getenv("PRIVATE_KEY")
 	if privateKey == "" {
 		log.Fatal("PRIVATE_KEY environment variable not set")
@@ -19,12 +24,23 @@ func main() {
 		log.Fatal("TO_ADDRESS environment variable not set")
 	}
 
-	// Swapping the adapter here is all it takes to change the target blockchain.
-	var adapter core.BlockchainAdapter = eth.NewAdapter(
-		"https://ethereum-sepolia-rpc.publicnode.com",
-		11155111, // Sepolia chain ID
-		"https://sepolia.etherscan.io",
-	)
+	var adapter core.BlockchainAdapter
+
+	switch chain {
+	case "eth":
+		adapter = eth.NewAdapter(
+			"https://ethereum-sepolia-rpc.publicnode.com",
+			11155111, // Sepolia chain ID
+			"https://sepolia.etherscan.io",
+		)
+	case "sol":
+		adapter = sol.NewAdapter(
+			"https://api.devnet.solana.com",
+			"https://explorer.solana.com",
+		)
+	default:
+		log.Fatalf("unsupported chain: %q (use 'eth' or 'sol')", chain)
+	}
 
 	result, err := adapter.Transfer(core.TransferRequest{
 		PrivateKey: privateKey,
