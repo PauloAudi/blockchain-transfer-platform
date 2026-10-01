@@ -1,6 +1,6 @@
-# Cross-Chain Transfer Platform
+# Multi-Chain Transfer Platform
 
-A modular and reusable platform for transferring digital assets between different blockchain networks, built as part of an MBA Software Engineering thesis.
+A modular and reusable platform for transferring digital assets on multiple blockchain networks (Ethereum, Solana, Bitcoin), built as part of an MBA Software Engineering thesis.
 
 ## Architecture
 
